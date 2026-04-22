@@ -14,13 +14,13 @@ def user_login(request):
             if user.is_staff:
                 messages.error(request, 'Please use admin login.')
                 return redirect('admin_login')
+
             login(request, user)
             return redirect('dashboard')
         else:
             messages.error(request, 'Invalid username or password.')
 
     return render(request, 'registration/user_login.html')
-
 
 def admin_login(request):
     if request.method == 'POST':
