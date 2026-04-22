@@ -1,14 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block content %}
-<div class="text-center">
-    <h1 class="mb-3">OpenSky Team Registry</h1>
-    <p class="lead">A central portal for viewing Sky engineering teams, managers, departments, and dependencies.</p>
+{% block title %}Welcome - OpenSky{% endblock %}
 
-    <div class="mt-4">
-        <a href="{% url 'login' %}">User Login</a>
-        <a href="{% url 'admin_login' %}">Admin Login</a>
-        <a href="{% url 'signup' %}">Sign Up</a>    
+{% block auth_content %}
+<div style="text-align: center; max-width: 600px;">
+    <img src="{% static 'images/opensky_logo.png' %}" alt="OpenSky Logo" style="width: 100px; margin-bottom: 20px;">
+    <h1 style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 10px;">OpenSky</h1>
+    <p style="font-size: 1.25rem; color: #666; margin-bottom: 40px;">The central portal for Sky engineering teams, departments, and dependencies.</p>
+
+    <div style="display: flex; gap: 20px; justify-content: center;">
+        <a href="{% url 'login' %}" class="btn-primary" style="text-decoration: none; padding: 15px 40px; font-size: 1.1rem;">User Login</a>
+        <a href="{% url 'admin_login' %}" class="btn-primary" style="background-color: var(--secondary-color); text-decoration: none; padding: 15px 40px; font-size: 1.1rem;">Admin Login</a>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <a href="{% url 'signup' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">New here? Create an account</a>
     </div>
 </div>
 {% endblock %}

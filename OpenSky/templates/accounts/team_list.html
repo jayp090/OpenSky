@@ -1,33 +1,64 @@
 {% extends 'base.html' %}
 
+{% block title %}Engineering Teams - OpenSky{% endblock %}
+{% block page_title %}Teams Directory{% endblock %}
+
 {% block content %}
-<h1 class="mb-4">Teams</h1>
+<div class="card mb-4" style="padding: 15px;">
+    <form method="get" style="display: flex; gap: 15px;">
+        <div style="flex: 1; position: relative;">
+            <i class="bi bi-search" style="position: absolute; left: 15px; top: 12px; color: #999;"></i>
+            <input type="text" name="q" class="form-control" placeholder="Search by team name, department, or manager..." value="{{ query }}" style="padding-left: 45px; margin-bottom: 0;">
+        </div>
+        <button type="submit" class="btn-primary" style="padding: 0 30px;">Search</button>
+        {% if query %}
+            <a href="{% url 'team_list' %}" class="btn-primary" style="background-color: #666; text-decoration: none; padding: 12px 20px;">Clear</a>
+        {% endif %}
+    </form>
+</div>
 
-<form method="get" class="row g-3 mb-4">
-    <div class="col-md-9">
-        <input type="text" name="q" class="form-control" placeholder="Search by team, department, or manager" value="{{ query }}">
-    </div>
-    <div class="col-md-3">
-        <button type="submit" class="btn btn-primary w-100">Search</button>
-    </div>
-</form>
-
-<div class="row g-4">
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px;">
     {% for team in teams %}
-    <div class="col-md-6">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <h4>{{ team.name }}</h4>
-                <p><strong>Department:</strong> {{ team.department.name }}</p>
-                <p><strong>Manager:</strong> {{ team.manager_name }}</p>
-                <p><strong>Purpose:</strong> {{ team.purpose }}</p>
-                <a href="{% url 'team_detail' team.id %}" class="btn btn-outline-primary">View Team</a>
+    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                <span style="background: rgba(230, 0, 126, 0.1); color: var(--primary-color); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                    {{ team.department.name }}
+                </span>
+                <i class="bi bi-star" style="color: #ccc;"></i>
             </div>
+            <h3 style="margin: 0 0 10px 0; font-size: 1.25rem;">{{ team.name }}</h3>
+            <p style="color: #666; font-size: 0.9rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.7rem; margin-bottom: 20px;">
+                {{ team.purpose }}
+            </p>
+            
+            <div style="margin-bottom: 20px;">
+                <h4 style="font-size: 0.8rem; text-transform: uppercase; color: #999; margin-bottom: 8px;">Key Skills</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    {% for skill in team.skills.all|slice:":3" %}
+                        <span style="background: #eee; color: #555; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem;">{{ skill.name }}</span>
+                    {% empty %}
+                        <span style="color: #bbb; font-style: italic; font-size: 0.7rem;">No skills listed</span>
+                    {% endfor %}
+                    {% if team.skills.count > 3 %}
+                        <span style="color: #999; font-size: 0.7rem; padding: 2px;">+{{ team.skills.count|add:"-3" }} more</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div style="border-top: 1px solid #eee; padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://ui-avatars.com/api/?name={{ team.manager_name }}&background=001F3F&color=fff" alt="Mgr" style="width: 24px; border-radius: 50%;">
+                <span style="font-size: 0.8rem; font-weight: 600;">{{ team.manager_name }}</span>
+            </div>
+            <a href="{% url 'team_detail' team.id %}" style="color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.9rem;">Details →</a>
         </div>
     </div>
     {% empty %}
-    <div class="col-12">
-        <div class="alert alert-warning">No teams found.</div>
+    <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+        <i class="bi bi-inbox" style="font-size: 3rem; color: #ccc;"></i>
+        <p style="margin-top: 15px; color: #666;">No teams found matching your criteria.</p>
     </div>
     {% endfor %}
 </div>

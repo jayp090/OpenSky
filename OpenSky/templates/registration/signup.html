@@ -1,21 +1,35 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block content %}
-<div class="container mt-5" style="max-width: 500px;">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h2 class="mb-4 text-center">Sign Up</h2>
+{% block title %}Sign Up - OpenSky{% endblock %}
 
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-success w-100">Create Account</button>
-            </form>
+{% block auth_content %}
+<div class="card" style="width: 100%; max-width: 400px; padding: 40px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <img src="{% static 'images/opensky_logo.png' %}" alt="OpenSky Logo" style="width: 60px; margin-bottom: 15px;">
+        <h2 style="color: var(--secondary-color);">Create Account</h2>
+        <p style="color: #666;">Join the Engineering Directory</p>
+    </div>
 
-            <div class="mt-3 text-center">
-                <a href="{% url 'login' %}">Back to Login</a>
-            </div>
-        </div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; margin-top: 20px;">Register</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <p>Already have an account? <a href="{% url 'login' %}" style="color: var(--primary-color); font-weight: 600;">Sign In</a></p>
     </div>
 </div>
+
+<style>
+    form p { margin-bottom: 15px; }
+    form input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+    .helptext { display: block; font-size: 0.75rem; color: #999; margin-top: 5px; }
+</style>
 {% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings - OpenSky{% endblock %}
+{% block page_title %}Settings{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px;">
+    <h3>Account Preferences</h3>
+    <p style="color: #666;">Manage your account settings and preferences below.</p>
+    
+    <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+            <div>
+                <div style="font-weight: 600;">Email Notifications</div>
+                <div style="font-size: 0.8rem; color: #999;">Receive updates about team dependencies.</div>
+            </div>
+            <div style="width: 40px; height: 20px; background: var(--primary-color); border-radius: 10px; position: relative;">
+                <div style="width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; right: 2px; top: 2px;"></div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+            <div>
+                <div style="font-weight: 600;">Security Privacy</div>
+                <div style="font-size: 0.8rem; color: #999;">Change your password or manage sessions.</div>
+            </div>
+            <button class="btn-primary" style="font-size: 0.8rem; padding: 5px 15px;">Update</button>
+        </div>
+    </div>
+    
+    <p style="margin-top: 40px; font-size: 0.8rem; color: #ccc;">Version 1.0.4-Beta</p>
+</div>
+{% endblock %}

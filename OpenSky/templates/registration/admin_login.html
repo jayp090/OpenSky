@@ -1,25 +1,31 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card shadow-sm border-warning">
-            <div class="card-body">
-                <h2 class="mb-4">Admin Login</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label">Admin Username</label>
-                        <input type="text" name="username" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-warning w-100">Login as Admin</button>
-                </form>
-            </div>
+{% block title %}Admin Login - OpenSky{% endblock %}
+
+{% block auth_content %}
+<div class="card" style="width: 100%; max-width: 400px; padding: 40px; border-top: 5px solid var(--primary-color);">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <img src="{% static 'images/opensky_logo.png' %}" alt="OpenSky Logo" style="width: 60px; margin-bottom: 15px; filter: grayscale(1) brightness(0.5);">
+        <h2 style="color: var(--secondary-color);">Admin Access</h2>
+        <p style="color: #666;">Staff credentials required</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="username" style="display: block; margin-bottom: 8px; font-weight: 600;">Admin Username</label>
+            <input type="text" name="username" id="username" class="form-control" placeholder="Admin ID" required>
         </div>
+        <div class="mb-4">
+            <label for="password" style="display: block; margin-bottom: 8px; font-weight: 600;">Password</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; background-color: var(--secondary-color);">Admin Login</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'login' %}" style="font-size: 0.9rem; color: #666; text-decoration: none;">Not an admin? <span style="color: var(--primary-color);">User Login</span></a>
     </div>
 </div>
 {% endblock %}

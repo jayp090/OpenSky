@@ -1,46 +1,41 @@
 {% extends 'base.html' %}
 
+{% block title %}Admin Dashboard - OpenSky{% endblock %}
+{% block page_title %}Admin Control Panel{% endblock %}
+
 {% block content %}
-<h1 class="mb-4">Admin Dashboard</h1>
-
-<div class="row g-4">
-    <div class="col-md-3">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5>Team Management</h5>
-                <p>Add, edit, or remove teams.</p>
-                <a href="/django-admin/" class="btn btn-warning">Open Admin</a>
-            </div>
-        </div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 40px;">
+    <div class="card" style="border-left: 5px solid var(--primary-color);">
+        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Total Teams</h3>
+        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ total_teams }}</p>
+        <span style="color: var(--primary-color); font-size: 0.8rem;">Registered in Database</span>
+    </div>
+    
+    <div class="card" style="border-left: 5px solid var(--secondary-color);">
+        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Total Departments</h3>
+        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ total_depts }}</p>
+        <span style="color: var(--secondary-color); font-size: 0.8rem;">Organizational Units</span>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5>Departments</h5>
-                <p>Manage departments and structures.</p>
-                <a href="/django-admin/" class="btn btn-warning">Open Admin</a>
-            </div>
-        </div>
+    <div class="card" style="border-left: 5px solid #FF9F00;">
+        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Total Members</h3>
+        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ total_members }}</p>
+        <span style="color: #FF9F00; font-size: 0.8rem;">Across all teams</span>
     </div>
+</div>
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5>Users</h5>
-                <p>Manage access and permissions.</p>
-                <a href="/django-admin/" class="btn btn-warning">Open Admin</a>
-            </div>
+<div class="card" style="background-color: #fcfcfc;">
+    <h3>Management Portal</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+        <div style="padding: 15px; border: 1px dashed #ccc; border-radius: 8px;">
+            <h4>Directory Maintenance</h4>
+            <p style="font-size: 0.9rem; color: #666;">Add, Edit, or Remove team entries and dependencies.</p>
+            <a href="{% url 'team_list' %}" class="btn-primary" style="display: inline-block; margin-top: 10px; text-decoration: none;">Manage Teams</a>
         </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5>Reports</h5>
-                <p>Access reporting and visualisation tools.</p>
-                <a href="/django-admin/" class="btn btn-warning">Open Admin</a>
-            </div>
+        <div style="padding: 15px; border: 1px dashed #ccc; border-radius: 8px;">
+            <h4>User Access</h4>
+            <p style="font-size: 0.9rem; color: #666;">View and manage system users and staff permissions.</p>
+            <a href="/admin/auth/user/" class="btn-primary" style="display: inline-block; margin-top: 10px; background-color: var(--secondary-color); text-decoration: none;">User Permissions</a>
         </div>
     </div>
 </div>
