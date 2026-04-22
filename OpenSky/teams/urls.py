@@ -1,8 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('django-admin/', admin.site.urls),
-    path('', include('accounts.urls')),
-    path('teams/', include('teams.urls')),
+    path('', views.team_list, name='team_list'),
+    path('<int:team_id>/', views.team_detail, name='team_detail'),
 ]

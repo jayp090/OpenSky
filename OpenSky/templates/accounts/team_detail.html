@@ -1,47 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ team.name }}</h1>
+<h1 class="mb-4">Teams</h1>
 
-<p><strong>Department:</strong> {{ team.department.name }}</p>
-<p><strong>Manager:</strong> {{ team.manager_name }}</p>
-<p><strong>Manager Email:</strong> {{ team.manager_email }}</p>
-<p><strong>Purpose:</strong> {{ team.purpose }}</p>
-<p><strong>Contact Channel:</strong> {{ team.contact_channel }}</p>
+<form class="row g-3 mb-4">
+    <div class="col-md-8">
+        <input type="text" class="form-control" placeholder="Search by team, department, or manager">
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary w-100">Search</button>
+    </div>
+</form>
 
-<h2>Skills</h2>
-<ul>
-    {% for skill in team.skills.all %}
-        <li>{{ skill.name }}</li>
-    {% empty %}
-        <li>No skills listed.</li>
-    {% endfor %}
-</ul>
-
-<h2>Team Members</h2>
-<ul>
-    {% for member in team.members.all %}
-        <li>{{ member.full_name }} - {{ member.role }} - {{ member.email }}</li>
-    {% empty %}
-        <li>No team members listed.</li>
-    {% endfor %}
-</ul>
-
-<h2>Upstream Dependencies</h2>
-<ul>
-    {% for dependency in team.upstream_dependencies.all %}
-        <li>{{ dependency.name }}</li>
-    {% empty %}
-        <li>No upstream dependencies.</li>
-    {% endfor %}
-</ul>
-
-<h2>Downstream Dependencies</h2>
-<ul>
-    {% for dependency in team.downstream_teams.all %}
-        <li>{{ dependency.name }}</li>
-    {% empty %}
-        <li>No downstream dependencies.</li>
-    {% endfor %}
-</ul>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5>Platform Engineering</h5>
+        <p>Department: Engineering Operations</p>
+        <a href="/teams/1/" class="btn btn-outline-primary">View Team</a>
+    </div>
+</div>
 {% endblock %}
