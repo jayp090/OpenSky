@@ -1,22 +1,53 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="mb-4">Teams</h1>
+{% if team %}
+<h1 class="mb-4">{{ team.name }}</h1>
 
-<form class="row g-3 mb-4">
-    <div class="col-md-8">
-        <input type="text" class="form-control" placeholder="Search by team, department, or manager">
-    </div>
-    <div class="col-md-4">
-        <button class="btn btn-primary w-100">Search</button>
-    </div>
-</form>
-
-<div class="card shadow-sm">
+<div class="card shadow-sm mb-4">
     <div class="card-body">
-        <h5>Platform Engineering</h5>
-        <p>Department: Engineering Operations</p>
-        <a href="/teams/1/" class="btn btn-outline-primary">View Team</a>
+        <p><strong>Department:</strong> {{ team.department }}</p>
+        <p><strong>Manager:</strong> {{ team.manager }}</p>
+        <p><strong>Purpose:</strong> {{ team.purpose }}</p>
+        <p><strong>Contact:</strong> {{ team.contact }}</p>
+
+        <p><strong>Skills:</strong>
+            {% for skill in team.skills %}
+                <span class="badge bg-primary">{{ skill }}</span>
+            {% endfor %}
+        </p>
+
+        <p><strong>Members:</strong>
+            {% for member in team.members %}
+                {{ member }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+
+        <p><strong>Repositories:</strong>
+            {% for repo in team.repositories %}
+                {{ repo }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+
+        <p><strong>Upstream Dependencies:</strong>
+            {% for item in team.upstream %}
+                {{ item }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+
+        <p><strong>Downstream Dependencies:</strong>
+            {% for item in team.downstream %}
+                {{ item }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
     </div>
 </div>
+
+<div class="d-flex gap-2">
+    <a href="{% url 'email_team' team.id %}" class="btn btn-primary">Email Team</a>
+    <a href="{% url 'schedule_meeting' team.id %}" class="btn btn-success">Schedule Meeting</a>
+</div>
+{% else %}
+<div class="alert alert-danger">Team not found.</div>
+{% endif %}
 {% endblock %}

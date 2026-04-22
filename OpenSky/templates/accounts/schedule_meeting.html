@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Schedule Meeting</h1>
+
+{% if team %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p><strong>Team:</strong> {{ team.name }}</p>
+
+        <form>
+            <div class="mb-3">
+                <label class="form-label">Date</label>
+                <input type="date" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Time</label>
+                <input type="time" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Platform</label>
+                <input type="text" class="form-control" placeholder="Teams / Zoom / Google Meet">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Message</label>
+                <textarea class="form-control" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Schedule</button>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

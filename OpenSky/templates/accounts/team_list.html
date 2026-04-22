@@ -3,20 +3,32 @@
 {% block content %}
 <h1 class="mb-4">Teams</h1>
 
-<form class="row g-3 mb-4">
-    <div class="col-md-8">
-        <input type="text" class="form-control" placeholder="Search by team, department, or manager">
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-9">
+        <input type="text" name="q" class="form-control" placeholder="Search by team, department, or manager" value="{{ query }}">
     </div>
-    <div class="col-md-4">
-        <button class="btn btn-primary w-100">Search</button>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
     </div>
 </form>
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <h5>Platform Engineering</h5>
-        <p>Department: Engineering Operations</p>
-        <a href="/teams/1/" class="btn btn-outline-primary">View Team</a>
+<div class="row g-4">
+    {% for team in teams %}
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h4>{{ team.name }}</h4>
+                <p><strong>Department:</strong> {{ team.department }}</p>
+                <p><strong>Manager:</strong> {{ team.manager }}</p>
+                <p><strong>Purpose:</strong> {{ team.purpose }}</p>
+                <a href="{% url 'team_detail' team.id %}" class="btn btn-outline-primary">View Team</a>
+            </div>
+        </div>
     </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-warning">No teams found.</div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

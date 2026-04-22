@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Email Team</h1>
+
+{% if team %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p><strong>Team:</strong> {{ team.name }}</p>
+        <p><strong>Email:</strong> {{ team.contact }}</p>
+
+        <form>
+            <div class="mb-3">
+                <label class="form-label">Subject</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Message</label>
+                <textarea class="form-control" rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Email</button>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
