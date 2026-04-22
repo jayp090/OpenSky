@@ -1,28 +1,20 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-
-# Create your views here.
 
 
 def home(request):
-    return HttpResponse("Home page")
-
+    return render(request, 'core/home.html')
 
 def user_login(request):
-    return HttpResponse("User login page")
-
+    return render(request, 'registration/user_login.html')
 
 def admin_login(request):
-    return HttpResponse("Admin login page")
-
+    return render(request, 'registration/admin_login.html')
 
 def signup(request):
-    return HttpResponse("Signup page")
-
+    return render(request, 'registration/signup.html')
 
 def dashboard(request):
-    return HttpResponse("User dashboard")
-
+    return render(request, 'core/dashboard.html')
 
 def admin_dashboard(request):
-    return HttpResponse("Admin dashboard")
+    return render(request, 'core/admin_dashboard.html')

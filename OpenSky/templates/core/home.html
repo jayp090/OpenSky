@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>OpenSky Home</title>
-</head>
-<body>
-    <h1>OpenSky Team Registry</h1>
-    <p>Welcome to the Sky Engineering Teams portal.</p>
-    <a href="/accounts/login/">Login</a>
-    <a href="/dashboard/">Dashboard</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="mb-3">OpenSky Team Registry</h1>
+    <p class="lead">A central portal for viewing Sky engineering teams, managers, departments, and dependencies.</p>
+
+    <div class="mt-4">
+        <a href="/login/" class="btn btn-primary btn-lg me-2">User Login</a>
+        <a href="/login/admin/" class="btn btn-warning btn-lg me-2">Admin Login</a>
+        <a href="/signup/" class="btn btn-outline-primary btn-lg">Sign Up</a>
+    </div>
+</div>
+{% endblock %}

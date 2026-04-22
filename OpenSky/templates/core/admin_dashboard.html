@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Team Management</h5>
+                <p>Add, edit, or remove teams.</p>
+                <a href="/django-admin/" class="btn btn-warning">Open Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Departments</h5>
+                <p>Manage departments and structures.</p>
+                <a href="/django-admin/" class="btn btn-warning">Open Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Users</h5>
+                <p>Manage access and permissions.</p>
+                <a href="/django-admin/" class="btn btn-warning">Open Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Reports</h5>
+                <p>Access reporting and visualisation tools.</p>
+                <a href="/django-admin/" class="btn btn-warning">Open Admin</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
