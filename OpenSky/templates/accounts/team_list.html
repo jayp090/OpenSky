@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Teams</h1>
+
+<form method="get">
+    <input type="text" name="q" placeholder="Search teams, departments, managers, skills" value="{{ query }}">
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+    {% for team in teams %}
+        <li>
+            <a href="{% url 'team_detail' team.pk %}">{{ team.name }}</a>
+            - {{ team.department.name }}
+            - Manager: {{ team.manager_name }}
+        </li>
+    {% empty %}
+        <li>No teams found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
