@@ -1,16 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="mb-4">Teams</h1>
+<h1 class="mb-4">My Teams</h1>
 
-<form method="get" class="row g-3 mb-4">
-    <div class="col-md-9">
-        <input type="text" name="q" class="form-control" placeholder="Search by team, department, or manager" value="{{ query }}">
-    </div>
-    <div class="col-md-3">
-        <button type="submit" class="btn btn-primary w-100">Search</button>
-    </div>
-</form>
+<p class="text-muted mb-4">These are the teams you are a member of.</p>
 
 <div class="row g-4">
     {% for team in teams %}
@@ -27,7 +20,10 @@
     </div>
     {% empty %}
     <div class="col-12">
-        <div class="alert alert-warning">No teams found.</div>
+        <div class="alert alert-info">
+            <p class="mb-0">You are not a member of any teams yet.</p>
+            <p class="mb-0 mt-2"><a href="{% url 'team_list' %}" class="btn btn-primary btn-sm">Browse all teams</a></p>
+        </div>
     </div>
     {% endfor %}
 </div>

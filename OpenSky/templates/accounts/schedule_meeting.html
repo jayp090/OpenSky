@@ -8,22 +8,23 @@
     <div class="card-body">
         <p><strong>Team:</strong> {{ team.name }}</p>
 
-        <form>
+        <form method="post">
+            {% csrf_token %}
             <div class="mb-3">
                 <label class="form-label">Date</label>
-                <input type="date" class="form-control">
+                <input type="date" name="meeting_date" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Time</label>
-                <input type="time" class="form-control">
+                <input type="time" name="meeting_time" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Platform</label>
-                <input type="text" class="form-control" placeholder="Teams / Zoom / Google Meet">
+                <input type="text" name="platform" class="form-control" placeholder="Teams / Zoom / Google Meet" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Message</label>
-                <textarea class="form-control" rows="4"></textarea>
+                <textarea name="message" class="form-control" rows="4"></textarea>
             </div>
             <button type="submit" class="btn btn-success">Schedule</button>
         </form>

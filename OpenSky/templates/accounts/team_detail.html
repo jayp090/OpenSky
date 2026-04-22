@@ -4,42 +4,45 @@
 {% if team %}
 <h1 class="mb-4">{{ team.name }}</h1>
 
-<div class="card shadow-sm mb-4">
-    <div class="card-body">
-        <p><strong>Department:</strong> {{ team.department }}</p>
-        <p><strong>Manager:</strong> {{ team.manager }}</p>
-        <p><strong>Purpose:</strong> {{ team.purpose }}</p>
-        <p><strong>Contact:</strong> {{ team.contact }}</p>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5>Team Information</h5>
+                <p><strong>Department:</strong> {{ team.department.name }}</p>
+                <p><strong>Manager:</strong> {{ team.manager_name }}</p>
+                <p><strong>Manager Email:</strong> {{ team.manager_email }}</p>
+                <p><strong>Purpose:</strong> {{ team.purpose }}</p>
+                <p><strong>Contact Channel:</strong> {{ team.contact_channel|default:"Not specified" }}</p>
 
-        <p><strong>Skills:</strong>
-            {% for skill in team.skills %}
-                <span class="badge bg-primary">{{ skill }}</span>
-            {% endfor %}
-        </p>
+                <h6 class="mt-4">Skills</h6>
+                <div>
+                    {% for skill in team.skills.all %}
+                        <span class="badge bg-primary">{{ skill.name }}</span>
+                    {% empty %}
+                        <span class="text-muted">No skills listed</span>
+                    {% endfor %}
+                </div>
 
-        <p><strong>Members:</strong>
-            {% for member in team.members %}
-                {{ member }}{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </p>
+                <h6 class="mt-4">Team Members</h6>
+                <ul class="list-unstyled">
+                    {% for member in members %}
+                        <li><strong>{{ member.full_name }}</strong> - {{ member.role }} ({{ member.email }})</li>
+                    {% empty %}
+                        <li class="text-muted">No members listed</li>
+                    {% endfor %}
+                </ul>
 
-        <p><strong>Repositories:</strong>
-            {% for repo in team.repositories %}
-                {{ repo }}{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </p>
-
-        <p><strong>Upstream Dependencies:</strong>
-            {% for item in team.upstream %}
-                {{ item }}{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </p>
-
-        <p><strong>Downstream Dependencies:</strong>
-            {% for item in team.downstream %}
-                {{ item }}{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </p>
+                <h6 class="mt-4">Upstream Dependencies</h6>
+                <ul>
+                    {% for dep in team.upstream_dependencies.all %}
+                        <li>{{ dep.name }}</li>
+                    {% empty %}
+                        <li class="text-muted">No upstream dependencies</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -7,9 +7,19 @@
     <div class="col-md-4">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h5>Teams</h5>
-                <p>Browse and search engineering teams.</p>
-                <a href="/teams/" class="btn btn-primary">Open Teams</a>
+                <h5>My Teams</h5>
+                <p>View teams you are a member of.</p>
+                <a href="{% url 'my_teams' %}" class="btn btn-primary">My Teams</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>All Teams</h5>
+                <p>Browse and search all engineering teams.</p>
+                <a href="{% url 'team_list' %}" class="btn btn-outline-primary">Browse Teams</a>
             </div>
         </div>
     </div>
@@ -19,16 +29,6 @@
             <div class="card-body">
                 <h5>Organization</h5>
                 <p>View departments and team relationships.</p>
-                <a href="#" class="btn btn-secondary">Coming Soon</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5>Messages</h5>
-                <p>Access inbox and sent messages.</p>
                 <a href="#" class="btn btn-secondary">Coming Soon</a>
             </div>
         </div>
