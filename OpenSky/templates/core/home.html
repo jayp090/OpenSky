@@ -6,9 +6,9 @@
     <p class="lead">A central portal for viewing Sky engineering teams, managers, departments, and dependencies.</p>
 
     <div class="mt-4">
-        <a href="/login/" class="btn btn-primary btn-lg me-2">User Login</a>
-        <a href="/login/admin/" class="btn btn-warning btn-lg me-2">Admin Login</a>
-        <a href="/signup/" class="btn btn-outline-primary btn-lg">Sign Up</a>
+        <a href="{% url 'login' %}">User Login</a>
+        <a href="{% url 'admin_login' %}">Admin Login</a>
+        <a href="{% url 'signup' %}">Sign Up</a>    
     </div>
 </div>
 {% endblock %}
