@@ -1,108 +1,220 @@
 {% extends 'base.html' %}
-
-{% block title %}{{ team.name }} - OpenSky{% endblock %}
-{% block page_title %}Team Details{% endblock %}
+{% block title %}{{ team.name }} – Open Sky{% endblock %}
 
 {% block content %}
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
-    <!-- Left Column: Primary Info -->
-    <div style="display: flex; flex-direction: column; gap: 30px;">
-        <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="margin: 0; color: var(--secondary-color);">{{ team.name }}</h2>
-                <div style="display: flex; gap: 10px;">
-                    <a href="{% url 'email_team' team.id %}" class="btn-primary" style="text-decoration: none;"><i class="bi bi-envelope"></i> Email Team</a>
-                    <a href="{% url 'schedule_meeting' team.id %}" class="btn-primary" style="background-color: var(--secondary-color); text-decoration: none;"><i class="bi bi-calendar-event"></i> Schedule Meeting</a>
-                </div>
+<!-- Breadcrumb -->
+<div class="breadcrumb mb-2">
+    <a href="{% url 'home' %}">Open Sky</a><span>›</span>
+    <a href="{% url 'team_list' %}">Teams</a><span>›</span>
+    {{ team.name }}
+</div>
+
+<!-- Team header -->
+<div class="card mb-3">
+    <div class="flex-between" style="flex-wrap:wrap; gap:12px;">
+        <div class="flex-center">
+            <div class="avatar avatar-navy" style="width:52px;height:52px;font-size:16px;border-radius:12px;">{{ team.name|slice:":2"|upper }}</div>
+            <div>
+                <h1 style="margin:0; font-size:1.4rem;">{{ team.name }}</h1>
+                <p class="text-muted text-sm" style="margin:2px 0 0;">
+                    <span class="badge badge-pink">{{ team.department.name|default:"No Department" }}</span>
+                    &nbsp;· Head: {{ team.department.head|default:"—" }}
+                </p>
             </div>
-            <p style="font-size: 1.1rem; line-height: 1.6; color: #444;">{{ team.purpose }}</p>
-            
-            <div style="margin-top: 30px;">
-                <h4 style="font-size: 0.9rem; text-transform: uppercase; color: #999; margin-bottom: 15px;">Key Skills & Technologies</h4>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    {% for skill in team.skills.all %}
-                        <span style="background: rgba(230, 0, 126, 0.1); color: var(--primary-color); padding: 6px 15px; border-radius: 8px; font-weight: 600; font-size: 0.85rem;">{{ skill.name }}</span>
-                    {% endfor %}
-                </div>
+        </div>
+        <div style="display:flex; gap:10px;">
+            <a href="{% url 'email_team' team.id %}" class="btn btn-outline"><i class="bi bi-envelope"></i> Email Team</a>
+            <a href="{% url 'schedule_meeting' team.id %}" class="btn btn-primary"><i class="bi bi-calendar-event"></i> Schedule Meeting</a>
+            {% if user.is_staff %}
+            <a href="{% url 'admin_team_edit' team.id %}" class="btn btn-outline"><i class="bi bi-pencil"></i> Edit</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+    <a href="?tab=overview"     class="tab-link {% if tab == 'overview' %}active{% endif %}">Overview</a>
+    <a href="?tab=dependencies" class="tab-link {% if tab == 'dependencies' %}active{% endif %}">Dependencies</a>
+    <a href="?tab=members"      class="tab-link {% if tab == 'members' %}active{% endif %}">Members ({{ members.count }})</a>
+</div>
+
+<!-- Overview tab -->
+{% if tab == 'overview' or not tab %}
+<div class="grid-2" style="align-items:start;">
+    <div style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Stats row -->
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+            <div class="card text-center">
+                <div style="font-size:1.6rem; font-weight:700; color:var(--primary);">{{ upstream.count }}</div>
+                <div class="text-xs text-muted">Upstream Deps</div>
+            </div>
+            <div class="card text-center">
+                <div style="font-size:1.6rem; font-weight:700; color:var(--navy);">{{ downstream.count }}</div>
+                <div class="text-xs text-muted">Downstream Deps</div>
+            </div>
+            <div class="card text-center">
+                <div style="font-size:1.6rem; font-weight:700;">{{ upstream.count|add:downstream.count }}</div>
+                <div class="text-xs text-muted">Total Connections</div>
             </div>
         </div>
 
+        <!-- Purpose -->
         <div class="card">
-            <h3>Team Members</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
-                {% for member in members %}
-                <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: #f9f9f9; border-radius: 8px;">
-                    <img src="https://ui-avatars.com/api/?name={{ member.full_name }}&background=ccc&color=333" alt="Avatar" style="width: 32px; border-radius: 50%;">
-                    <div>
-                        <div style="font-weight: 600; font-size: 0.9rem;">{{ member.full_name }}</div>
-                        <div style="font-size: 0.75rem; color: #777;">{{ member.role }}</div>
-                    </div>
-                </div>
+            <h3 style="font-size:0.9rem; font-weight:700; margin:0 0 10px; text-transform:uppercase; color:var(--muted); letter-spacing:0.04em;">Team Purpose</h3>
+            <p class="text-sm" style="line-height:1.7; margin:0;">{{ team.purpose|default:"No description provided." }}</p>
+        </div>
+
+        <!-- Skills -->
+        <div class="card">
+            <h3 style="font-size:0.9rem; font-weight:700; margin:0 0 12px; text-transform:uppercase; color:var(--muted); letter-spacing:0.04em;">Skills &amp; Technologies</h3>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                {% for skill in team.skills.all %}
+                <span class="badge badge-pink" style="font-size:0.8rem; padding:5px 12px;">{{ skill.name }}</span>
                 {% empty %}
-                <p style="color: #999; font-style: italic;">No members listed yet.</p>
+                <span class="text-sm text-muted" style="font-style:italic;">No skills listed.</span>
                 {% endfor %}
             </div>
         </div>
     </div>
 
-    <!-- Right Column: Metadata & Dependencies -->
-    <div style="display: flex; flex-direction: column; gap: 30px;">
+    <!-- Right: contact info & quick links -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
         <div class="card">
-            <h4 style="margin-top: 0;">Contact Information</h4>
-            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="bi bi-person-badge text-primary" style="font-size: 1.2rem;"></i>
+            <h3 style="font-size:0.9rem; font-weight:700; margin:0 0 16px; text-transform:uppercase; color:var(--muted); letter-spacing:0.04em;">Contact Information</h3>
+            <div style="display:flex; flex-direction:column; gap:14px;">
+                <div class="flex-center">
+                    <div class="avatar avatar-pink"><i class="bi bi-person-badge" style="font-size:0.9rem;"></i></div>
                     <div>
-                        <div style="font-size: 0.75rem; color: #999;">Manager</div>
-                        <div style="font-weight: 600;">{{ team.manager_name }}</div>
+                        <div class="text-xs text-muted">Team Manager</div>
+                        <div class="fw-600 text-sm">{{ team.manager_name }}</div>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="bi bi-chat-dots text-primary" style="font-size: 1.2rem;"></i>
+                <div class="flex-center">
+                    <div class="avatar avatar-pink"><i class="bi bi-envelope" style="font-size:0.9rem;"></i></div>
                     <div>
-                        <div style="font-size: 0.75rem; color: #999;">Slack Channel</div>
-                        <div style="font-weight: 600;">{{ team.contact_channel|default:"N/A" }}</div>
+                        <div class="text-xs text-muted">Manager Email</div>
+                        <div class="fw-600 text-sm">{{ team.manager_email|default:"—" }}</div>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="bi bi-building text-primary" style="font-size: 1.2rem;"></i>
+                <div class="flex-center">
+                    <div class="avatar avatar-pink"><i class="bi bi-chat-dots" style="font-size:0.9rem;"></i></div>
                     <div>
-                        <div style="font-size: 0.75rem; color: #999;">Department</div>
-                        <div style="font-weight: 600;">{{ team.department.name }}</div>
+                        <div class="text-xs text-muted">Slack Channel</div>
+                        <div class="fw-600 text-sm">{{ team.contact_channel|default:"—" }}</div>
                     </div>
                 </div>
+                <div class="flex-center">
+                    <div class="avatar avatar-navy"><i class="bi bi-building" style="font-size:0.9rem;"></i></div>
+                    <div>
+                        <div class="text-xs text-muted">Department</div>
+                        <div class="fw-600 text-sm">{{ team.department.name|default:"—" }}</div>
+                    </div>
+                </div>
+                {% if team.github_url %}
+                <div class="flex-center">
+                    <div class="avatar avatar-navy"><i class="bi bi-github" style="font-size:0.9rem;"></i></div>
+                    <div>
+                        <div class="text-xs text-muted">Code Repository</div>
+                        <a href="{{ team.github_url }}" target="_blank" rel="noopener" class="fw-600 text-sm text-primary" style="word-break:break-all;">{{ team.github_url }}</a>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
 
-        <div class="card" style="background: var(--secondary-color); color: white;">
-            <h4 style="margin-top: 0; color: white;">Dependencies</h4>
-            
-            <div style="margin-top: 20px;">
-                <h5 style="font-size: 0.75rem; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px;">Upstream (Depends On)</h5>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    {% for dep in team.upstream_dependencies.all %}
-                        <a href="{% url 'team_detail' dep.id %}" style="background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 6px; color: white; text-decoration: none; font-size: 0.85rem; display: flex; justify-content: space-between;">
-                            {{ dep.name }} <i class="bi bi-arrow-right-short"></i>
-                        </a>
-                    {% empty %}
-                        <span style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">No upstream dependencies</span>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div style="margin-top: 20px;">
-                <h5 style="font-size: 0.75rem; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px;">Downstream (Depended On By)</h5>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    {% for dep in team.downstream_teams.all %}
-                        <a href="{% url 'team_detail' dep.id %}" style="background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 6px; color: white; text-decoration: none; font-size: 0.85rem; display: flex; justify-content: space-between;">
-                            {{ dep.name }} <i class="bi bi-arrow-left-short"></i>
-                        </a>
-                    {% empty %}
-                        <span style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">No downstream dependencies</span>
-                    {% endfor %}
+        <div class="card">
+            <h3 style="font-size:0.9rem; font-weight:700; margin:0 0 12px; text-transform:uppercase; color:var(--muted); letter-spacing:0.04em;">Key Contacts</h3>
+            <div class="flex-center" style="padding:8px; background:#f9fafb; border-radius:8px;">
+                <div class="avatar avatar-navy">{{ team.department.head|default:"DH"|slice:":2"|upper }}</div>
+                <div>
+                    <div class="fw-600 text-sm">{{ team.department.head|default:"—" }}</div>
+                    <div class="text-xs text-muted">Department Head</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endif %}
+
+<!-- Dependencies tab -->
+{% if tab == 'dependencies' %}
+<div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+    <span class="badge badge-pink" style="font-size:0.8rem; padding:6px 14px;">All Dependencies ({{ upstream.count|add:downstream.count }})</span>
+    <span class="badge badge-gray" style="font-size:0.8rem; padding:6px 14px;">Upstream ({{ upstream.count }})</span>
+    <span class="badge badge-gray" style="font-size:0.8rem; padding:6px 14px;">Downstream ({{ downstream.count }})</span>
+</div>
+
+{% if upstream %}
+<div class="card mb-3">
+    <h3 class="text-sm fw-600 text-muted mb-2" style="text-transform:uppercase; letter-spacing:0.04em;">Upstream — This team depends on:</h3>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Team Name</th><th>Type</th><th>Manager</th><th>Department</th><th>Actions</th></tr></thead>
+            <tbody>
+                {% for dep in upstream %}
+                <tr>
+                    <td class="fw-600">{{ dep.name }}</td>
+                    <td><span class="badge badge-pink">Upstream</span></td>
+                    <td class="text-sm">{{ dep.manager_name }}</td>
+                    <td class="text-sm">{{ dep.department.name|default:"—" }}</td>
+                    <td><a href="{% url 'team_detail' dep.id %}" class="text-primary text-sm fw-600" style="text-decoration:none;">View Team</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if downstream %}
+<div class="card">
+    <h3 class="text-sm fw-600 text-muted mb-2" style="text-transform:uppercase; letter-spacing:0.04em;">Downstream — Teams that depend on this team:</h3>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Team Name</th><th>Type</th><th>Manager</th><th>Department</th><th>Actions</th></tr></thead>
+            <tbody>
+                {% for dep in downstream %}
+                <tr>
+                    <td class="fw-600">{{ dep.name }}</td>
+                    <td><span class="badge badge-navy">Downstream</span></td>
+                    <td class="text-sm">{{ dep.manager_name }}</td>
+                    <td class="text-sm">{{ dep.department.name|default:"—" }}</td>
+                    <td><a href="{% url 'team_detail' dep.id %}" class="text-primary text-sm fw-600" style="text-decoration:none;">View Team</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if not upstream and not downstream %}
+<div class="empty-state"><i class="bi bi-diagram-2"></i><p>No dependencies recorded for this team.</p></div>
+{% endif %}
+{% endif %}
+
+<!-- Members tab -->
+{% if tab == 'members' %}
+<div class="card">
+    <div class="section-header mb-2">
+        <h2>Team Members</h2>
+        {% if user.is_staff %}<a href="{% url 'admin_team_edit' team.id %}#members">Manage →</a>{% endif %}
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px;">
+        {% for member in members %}
+        <div class="flex-center" style="padding:12px; background:#f9fafb; border-radius:10px; border:1px solid #f3f4f6;">
+            <div class="avatar avatar-pink" style="width:38px;height:38px;font-size:12px;">{{ member.full_name|slice:":2"|upper }}</div>
+            <div>
+                <div class="fw-600 text-sm">{{ member.full_name }}</div>
+                <div class="text-xs text-muted">{{ member.role }}</div>
+                <div class="text-xs text-muted">{{ member.email }}</div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state" style="grid-column:1/-1;"><i class="bi bi-people"></i><p>No members listed yet.</p></div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 {% endblock %}

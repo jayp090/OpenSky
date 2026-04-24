@@ -1,34 +1,64 @@
 {% extends 'base.html' %}
-
-{% block title %}Dashboard - OpenSky{% endblock %}
-{% block page_title %}User Dashboard{% endblock %}
+{% block title %}Dashboard – Open Sky{% endblock %}
 
 {% block content %}
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 40px;">
-    <div class="card" style="border-left: 5px solid var(--primary-color);">
-        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Total Teams</h3>
-        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ total_teams }}</p>
-        <span style="color: var(--primary-color); font-size: 0.8rem;">Centralized Registry</span>
-    </div>
-    
-    <div class="card" style="border-left: 5px solid var(--secondary-color);">
-        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Departments</h3>
-        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ total_depts }}</p>
-        <span style="color: var(--secondary-color); font-size: 0.8rem;">Active Workstreams</span>
-    </div>
-
-    <div class="card" style="border-left: 5px solid #00D1FF;">
-        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">My Memberships</h3>
-        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ my_teams_count }}</p>
-        <a href="{% url 'my_teams' %}" style="color: #00D1FF; font-size: 0.8rem; text-decoration: none;">View my teams →</a>
+<div class="page-header flex-between">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back, {{ user.get_full_name|default:user.username }}. Here's what's happening across your engineering teams.</p>
     </div>
 </div>
 
-<div class="card">
-    <h3>Quick Actions</h3>
-    <div style="display: flex; gap: 15px; margin-top: 20px;">
-        <a href="{% url 'team_list' %}" class="btn-primary" style="text-decoration: none;">Browse All Teams</a>
-        <a href="{% url 'profile' %}" class="btn-primary" style="background-color: var(--secondary-color); text-decoration: none;">Update Profile</a>
+<!-- Stat cards -->
+<div class="stat-cards">
+    <div class="stat-card">
+        <div class="stat-card-body">
+            <div class="stat-label">Total Teams</div>
+            <div class="stat-value">{{ total_teams }}</div>
+            <div class="stat-sub">Across all departments</div>
+        </div>
+        <div class="stat-card-icon stat-icon-pink"><i class="bi bi-people"></i></div>
     </div>
+    <div class="stat-card">
+        <div class="stat-card-body">
+            <div class="stat-label">Departments</div>
+            <div class="stat-value">{{ total_depts }}</div>
+            <div class="stat-sub">{{ total_depts }} department heads</div>
+        </div>
+        <div class="stat-card-icon stat-icon-navy"><i class="bi bi-building"></i></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-body">
+            <div class="stat-label">Dependencies</div>
+            <div class="stat-value">{{ total_deps }}</div>
+            <div class="stat-sub">Upstream &amp; downstream</div>
+        </div>
+        <div class="stat-card-icon stat-icon-teal"><i class="bi bi-diagram-2"></i></div>
+    </div>
+</div>
+
+<!-- Featured Teams -->
+<div class="card mb-3">
+    <div class="section-header">
+        <h2>Featured Teams</h2>
+        <a href="{% url 'team_list' %}">View All {{ total_teams }} Teams →</a>
+    </div>
+    {% for team in featured_teams %}
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f3f4f6;">
+        <div class="flex-center">
+            <div class="avatar avatar-navy">{{ team.name|slice:":2"|upper }}</div>
+            <div>
+                <div class="fw-600 text-sm">{{ team.name }}</div>
+                <div class="text-xs text-muted">Lead: {{ team.manager_name }}</div>
+            </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span class="badge badge-pink">{{ team.department.name|default:"—" }}</span>
+            <a href="{% url 'team_detail' team.id %}" class="text-xs text-primary fw-600" style="text-decoration:none;">View →</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state"><i class="bi bi-inbox"></i><p>No teams yet.</p></div>
+    {% endfor %}
 </div>
 {% endblock %}

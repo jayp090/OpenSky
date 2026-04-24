@@ -1,42 +1,182 @@
 {% extends 'base.html' %}
-
-{% block title %}Admin Dashboard - OpenSky{% endblock %}
-{% block page_title %}Admin Control Panel{% endblock %}
+{% block title %}Admin Dashboard – Open Sky{% endblock %}
 
 {% block content %}
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 40px;">
-    <div class="card" style="border-left: 5px solid var(--primary-color);">
-        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Total Teams</h3>
-        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ total_teams }}</p>
-        <span style="color: var(--primary-color); font-size: 0.8rem;">Registered in Database</span>
-    </div>
-    
-    <div class="card" style="border-left: 5px solid var(--secondary-color);">
-        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Total Departments</h3>
-        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ total_depts }}</p>
-        <span style="color: var(--secondary-color); font-size: 0.8rem;">Organizational Units</span>
-    </div>
-
-    <div class="card" style="border-left: 5px solid #FF9F00;">
-        <h3 style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Total Members</h3>
-        <p style="font-size: 2rem; font-weight: 700; margin: 10px 0;">{{ total_members }}</p>
-        <span style="color: #FF9F00; font-size: 0.8rem;">Across all teams</span>
+<div class="page-header flex-between">
+    <div>
+        <h1>Admin Dashboard</h1>
+        <p>Manage teams, departments, users and system settings.</p>
     </div>
 </div>
 
-<div class="card" style="background-color: #fcfcfc;">
-    <h3>Management Portal</h3>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-        <div style="padding: 15px; border: 1px dashed #ccc; border-radius: 8px;">
-            <h4>Directory Maintenance</h4>
-            <p style="font-size: 0.9rem; color: #666;">Add, Edit, or Remove team entries and dependencies.</p>
-            <a href="{% url 'team_list' %}" class="btn-primary" style="display: inline-block; margin-top: 10px; text-decoration: none;">Manage Teams</a>
+<!-- Stat cards -->
+<div class="stat-cards">
+    <div class="stat-card">
+        <div class="stat-card-body">
+            <div class="stat-label">Total Teams</div>
+            <div class="stat-value">{{ total_teams }}</div>
+            <div class="stat-sub">Registered in directory</div>
         </div>
-        <div style="padding: 15px; border: 1px dashed #ccc; border-radius: 8px;">
-            <h4>User Access</h4>
-            <p style="font-size: 0.9rem; color: #666;">View and manage system users and staff permissions.</p>
-            <a href="/admin/auth/user/" class="btn-primary" style="display: inline-block; margin-top: 10px; background-color: var(--secondary-color); text-decoration: none;">User Permissions</a>
+        <div class="stat-card-icon stat-icon-pink"><i class="bi bi-people"></i></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-body">
+            <div class="stat-label">Departments</div>
+            <div class="stat-value">{{ total_depts }}</div>
+            <div class="stat-sub">Organisational units</div>
         </div>
+        <div class="stat-card-icon stat-icon-navy"><i class="bi bi-building"></i></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-body">
+            <div class="stat-label">Total Members</div>
+            <div class="stat-value">{{ total_members }}</div>
+            <div class="stat-sub">Across all teams</div>
+        </div>
+        <div class="stat-card-icon stat-icon-teal"><i class="bi bi-person-lines-fill"></i></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-body">
+            <div class="stat-label">System Users</div>
+            <div class="stat-value">{{ total_users }}</div>
+            <div class="stat-sub">{{ total_admins }} admin{{ total_admins|pluralize }}</div>
+        </div>
+        <div class="stat-card-icon stat-icon-purple"><i class="bi bi-shield-check"></i></div>
     </div>
 </div>
+
+<!-- Action tiles -->
+<div class="card mb-3">
+    <h2 style="font-size:1rem; font-weight:700; margin:0 0 4px;">Management Actions</h2>
+    <p class="text-muted text-sm mb-2">Perform administrative tasks on the directory.</p>
+    <div class="action-tiles">
+        <a href="{% url 'admin_team_create' %}" class="action-tile">
+            <i class="bi bi-plus-circle"></i>
+            <span>Add Team</span>
+            <small>Create a new team entry</small>
+        </a>
+        <a href="{% url 'admin_team_list' %}" class="action-tile">
+            <i class="bi bi-people"></i>
+            <span>Team Management</span>
+            <small>Edit, delete, manage members</small>
+        </a>
+        <a href="{% url 'admin_dept_list' %}" class="action-tile">
+            <i class="bi bi-building"></i>
+            <span>Departments</span>
+            <small>Manage organisational units</small>
+        </a>
+        <a href="{% url 'admin_users' %}" class="action-tile">
+            <i class="bi bi-person-lock"></i>
+            <span>User Access</span>
+            <small>Manage permissions & roles</small>
+        </a>
+        <a href="{% url 'admin_reports' %}" class="action-tile">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            <span>Reports</span>
+            <small>Generate PDF &amp; Excel reports</small>
+        </a>
+        <a href="{% url 'team_list' %}" class="action-tile">
+            <i class="bi bi-search"></i>
+            <span>Browse Directory</span>
+            <small>View as regular user</small>
+        </a>
+    </div>
+</div>
+
+<!-- Data visualisation charts -->
+<div class="grid-2 mb-3" style="align-items:start;">
+    <div class="card">
+        <h2 style="font-size:1rem; font-weight:700; margin:0 0 16px;">Teams per Department</h2>
+        <canvas id="teamsChart" height="220"></canvas>
+    </div>
+    <div class="card">
+        <h2 style="font-size:1rem; font-weight:700; margin:0 0 16px;">Members per Department</h2>
+        <canvas id="membersChart" height="220"></canvas>
+    </div>
+</div>
+
+<!-- Recent teams + Audit log -->
+<div class="grid-2" style="align-items:start;">
+    <div class="card">
+        <div class="section-header mb-2">
+            <h2>Recently Added Teams</h2>
+            <a href="{% url 'admin_team_list' %}">Manage all →</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Team Name</th><th>Department</th><th>Manager</th><th>Members</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for team in recent_teams %}
+                    <tr>
+                        <td>
+                            <div class="flex-center">
+                                <div class="avatar avatar-pink">{{ team.name|slice:":2"|upper }}</div>
+                                <a href="{% url 'team_detail' team.id %}" class="fw-600" style="text-decoration:none;color:var(--text);">{{ team.name }}</a>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-pink">{{ team.department.name|default:"—" }}</span></td>
+                        <td class="text-sm">{{ team.manager_name }}</td>
+                        <td class="text-sm">{{ team.members.count }}</td>
+                        <td><a href="{% url 'admin_team_edit' team.id %}" class="btn btn-sm btn-outline">Edit</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="text-center text-muted" style="padding:30px;">No teams yet. <a href="{% url 'admin_team_create' %}">Add one →</a></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Audit trail -->
+    <div class="card">
+        <div class="section-header mb-2">
+            <h2>Audit Trail</h2>
+            <span class="text-xs text-muted">Last 10 changes</span>
+        </div>
+        {% if audit_logs %}
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            {% for log in audit_logs %}
+            <div style="display:flex; gap:10px; align-items:flex-start; padding:8px; background:#f9fafb; border-radius:8px; border-left:3px solid {% if log.action == 'create' %}var(--success){% elif log.action == 'delete' %}var(--danger){% else %}var(--navy){% endif %};">
+                <div style="flex:1;">
+                    <div class="text-sm fw-600">
+                        {% if log.action == 'create' %}<i class="bi bi-plus-circle text-success"></i>
+                        {% elif log.action == 'delete' %}<i class="bi bi-trash text-danger"></i>
+                        {% else %}<i class="bi bi-pencil" style="color:var(--navy);"></i>{% endif %}
+                        {{ log.object_type }}: {{ log.object_name }}
+                    </div>
+                    <div class="text-xs text-muted">by {{ log.performed_by }} · {{ log.timestamp|date:"d M Y H:i" }}</div>
+                </div>
+                <span class="badge {% if log.action == 'create' %}badge-green{% elif log.action == 'delete' %}badge-red{% else %}badge-navy{% endif %}" style="font-size:0.7rem;">{{ log.action }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state" style="padding:30px;"><i class="bi bi-clock-history"></i><p class="text-sm">No audit records yet.</p></div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const labels  = {{ chart_labels|safe }};
+const teams   = {{ chart_teams|safe }};
+const members = {{ chart_members|safe }};
+const PINK  = 'rgba(230,0,126,0.8)';
+const NAVY  = 'rgba(0,31,63,0.8)';
+const PINK_B = 'rgba(230,0,126,1)';
+const NAVY_B = 'rgba(0,31,63,1)';
+
+new Chart(document.getElementById('teamsChart'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Teams', data: teams, backgroundColor: PINK, borderColor: PINK_B, borderWidth: 1, borderRadius: 4 }] },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+});
+new Chart(document.getElementById('membersChart'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Members', data: members, backgroundColor: NAVY, borderColor: NAVY_B, borderWidth: 1, borderRadius: 4 }] },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 10 } } } }
+});
+</script>
 {% endblock %}

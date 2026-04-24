@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}{{ action }} Team – Open Sky Admin{% endblock %}
+
+{% block content %}
+<div class="breadcrumb mb-2">
+    <a href="{% url 'admin_dashboard' %}">Admin</a><span>›</span>
+    <a href="{% url 'admin_team_list' %}">Teams</a><span>›</span>
+    {{ action }} Team
+</div>
+
+<div class="page-header"><h1>{{ action }} Team</h1></div>
+
+<div class="grid-2" style="align-items:start;">
+    <!-- Main form -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card">
+            <h2 style="font-size:1rem; font-weight:700; margin:0 0 20px;">Team Details</h2>
+            <form method="post" id="team-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Team Name *</label>
+                    <input type="text" name="name" class="form-control" value="{{ team.name|default:'' }}" required placeholder="e.g. API Avengers">
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select name="department" class="form-control">
+                        <option value="">— No Department —</option>
+                        {% for dept in departments %}
+                        <option value="{{ dept.id }}" {% if team.department_id == dept.id %}selected{% endif %}>{{ dept.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Manager Name</label>
+                    <input type="text" name="manager_name" class="form-control" value="{{ team.manager_name|default:'' }}" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label>Manager Email</label>
+                    <input type="email" name="manager_email" class="form-control" value="{{ team.manager_email|default:'' }}" placeholder="manager@sky.uk">
+                </div>
+                <div class="form-group">
+                    <label>Purpose / Description</label>
+                    <textarea name="purpose" class="form-control" rows="4" placeholder="Describe the team's mission and responsibilities...">{{ team.purpose|default:'' }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Slack / Contact Channel</label>
+                    <input type="text" name="contact_channel" class="form-control" value="{{ team.contact_channel|default:'' }}" placeholder="#team-channel">
+                </div>
+                <div class="form-group">
+                    <label>Code Repository (GitHub URL)</label>
+                    <input type="url" name="github_url" class="form-control" value="{{ team.github_url|default:'' }}" placeholder="https://github.com/sky/team-repo">
+                </div>
+                <div class="form-group">
+                    <label>Skills (comma-separated)</label>
+                    <input type="text" name="skills" class="form-control" value="{{ skills_str|default:'' }}" placeholder="Python, Django, React, AWS">
+                    <small class="text-muted text-xs">Enter skills separated by commas.</small>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:8px;">
+                    <button type="submit" class="btn btn-primary">{{ action }} Team</button>
+                    <a href="{% url 'admin_team_list' %}" class="btn btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        {% if action == 'Edit' and team %}
+        <div class="danger-zone">
+            <h3 style="margin:0 0 8px; font-size:0.9rem; color:var(--danger);">Danger Zone</h3>
+            <p class="text-sm" style="margin:0 0 12px; color:#6b7280;">Permanently delete this team and all its members. This cannot be undone.</p>
+            <a href="{% url 'admin_team_delete' team.id %}" class="btn btn-danger btn-sm">
+                <i class="bi bi-trash"></i> Delete Team
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Members panel (edit only) -->
+    {% if action == 'Edit' and team %}
+    <div id="members" style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card">
+            <h2 style="font-size:1rem; font-weight:700; margin:0 0 16px;">Team Members ({{ members.count }})</h2>
+
+            <!-- Add member form -->
+            <form method="post" action="{% url 'admin_add_member' team.id %}" style="background:#f9fafb; padding:14px; border-radius:10px; margin-bottom:16px;">
+                {% csrf_token %}
+                <div class="text-sm fw-600 mb-1">Add New Member</div>
+                <div class="form-group mb-1">
+                    <input type="text" name="full_name" class="form-control" placeholder="Full name" required>
+                </div>
+                <div class="form-group mb-1">
+                    <input type="text" name="role" class="form-control" placeholder="Role (e.g. Engineer)" required>
+                </div>
+                <div class="form-group mb-1">
+                    <input type="email" name="email" class="form-control" placeholder="email@sky.uk" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i> Add Member</button>
+            </form>
+
+            <!-- Member list -->
+            {% for member in members %}
+            <div class="flex-between" style="padding:10px 0; border-bottom:1px solid #f3f4f6;">
+                <div class="flex-center">
+                    <div class="avatar avatar-navy avatar-sm">{{ member.full_name|slice:":2"|upper }}</div>
+                    <div>
+                        <div class="fw-600 text-sm">{{ member.full_name }}</div>
+                        <div class="text-xs text-muted">{{ member.role }} · {{ member.email }}</div>
+                    </div>
+                </div>
+                <form method="post" action="{% url 'admin_remove_member' member.id %}" onsubmit="return confirm('Remove {{ member.full_name }}?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                </form>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="padding:20px;"><i class="bi bi-people"></i><p class="text-sm">No members yet. Add one above.</p></div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

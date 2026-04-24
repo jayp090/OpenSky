@@ -1,33 +1,37 @@
 {% extends 'base.html' %}
-
-{% block title %}Settings - OpenSky{% endblock %}
-{% block page_title %}Settings{% endblock %}
+{% block title %}Settings – Open Sky{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 600px;">
-    <h3>Account Preferences</h3>
-    <p style="color: #666;">Manage your account settings and preferences below.</p>
-    
-    <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f9f9f9; border-radius: 8px;">
-            <div>
-                <div style="font-weight: 600;">Email Notifications</div>
-                <div style="font-size: 0.8rem; color: #999;">Receive updates about team dependencies.</div>
-            </div>
-            <div style="width: 40px; height: 20px; background: var(--primary-color); border-radius: 10px; position: relative;">
-                <div style="width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; right: 2px; top: 2px;"></div>
-            </div>
-        </div>
+<div class="page-header"><h1>Settings</h1></div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f9f9f9; border-radius: 8px;">
-            <div>
-                <div style="font-weight: 600;">Security Privacy</div>
-                <div style="font-size: 0.8rem; color: #999;">Change your password or manage sessions.</div>
-            </div>
-            <button class="btn-primary" style="font-size: 0.8rem; padding: 5px 15px;">Update</button>
+<div class="card" style="max-width:560px; display:flex; flex-direction:column; gap:16px;">
+    <!-- Profile link -->
+    <div class="flex-between" style="padding:14px; background:#f9fafb; border-radius:10px; border:1px solid #f3f4f6;">
+        <div>
+            <div class="fw-600 text-sm">Profile Information</div>
+            <div class="text-xs text-muted">Update your name and email address.</div>
         </div>
+        <a href="{% url 'profile' %}" class="btn btn-sm btn-outline">Edit Profile</a>
     </div>
-    
-    <p style="margin-top: 40px; font-size: 0.8rem; color: #ccc;">Version 1.0.4-Beta</p>
+
+    <!-- Change password -->
+    <div class="flex-between" style="padding:14px; background:#f9fafb; border-radius:10px; border:1px solid #f3f4f6;">
+        <div>
+            <div class="fw-600 text-sm">Password &amp; Security</div>
+            <div class="text-xs text-muted">Change your password or secure your account.</div>
+        </div>
+        <a href="{% url 'change_password' %}" class="btn btn-sm btn-primary"><i class="bi bi-key"></i> Change Password</a>
+    </div>
+
+    <!-- Account info -->
+    <div style="padding:14px; background:#f9fafb; border-radius:10px; border:1px solid #f3f4f6;">
+        <div class="fw-600 text-sm mb-1">Account Information</div>
+        <div class="text-xs text-muted">Username: <strong>{{ user.username }}</strong></div>
+        <div class="text-xs text-muted">Email: <strong>{{ user.email }}</strong></div>
+        <div class="text-xs text-muted">Role: <strong>{% if user.is_staff %}Administrator{% else %}Standard User{% endif %}</strong></div>
+        <div class="text-xs text-muted">Joined: <strong>{{ user.date_joined|date:"j F Y" }}</strong></div>
+    </div>
+
+    <p class="text-xs text-muted" style="margin:4px 0 0;">Version 1.0.5</p>
 </div>
 {% endblock %}
