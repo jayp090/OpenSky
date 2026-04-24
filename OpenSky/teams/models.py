@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Department(models.Model):
-    """A Sky engineering department (e.g. Platform Engineering)."""
+    """Represents a Sky engineering department (e.g. Platform Engineering)."""
     name = models.CharField(max_length=100)
     head = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
