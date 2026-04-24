@@ -2,11 +2,11 @@
 
 (assumes Windows Powershell, if you are using bash scripts or Linux replace `python3` with `python`
 
-if you do not have one, create a python venv outside your working directory:
+### if you do not have one, create a python venv outside your working directory:
 
 `python3 -m venv venv`
 
-pull the latest version of the repository:
+### pull the latest version of the repository:
 
 `git pull https://github.com/jayp090/OpenSky`
 
@@ -21,7 +21,7 @@ pip install all dependencies:
 
 `pip install -r requirements.txt`
 
-run setup commands for the server:
+### Run setup commands for the server:
 
 `python3 manage.py migrate`, then
 
@@ -29,7 +29,7 @@ run setup commands for the server:
 
 `python3 manage.py createsuperuser`
 
-reccommended admin user setup is:
+### Recommended admin user setup:
 
 username: `admin`
 
@@ -40,3 +40,9 @@ password: `Admin@1234`
 then, run the server:
 
 `python3 manage.py runserver`
+
+### Default user details for testing:
+
+email: `user@sky.uk`
+
+password: `User@1234`
