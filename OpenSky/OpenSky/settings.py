@@ -1,3 +1,4 @@
+# Author: Jay Patel (w2105573)
 """
 Django settings for OpenSky project.
 

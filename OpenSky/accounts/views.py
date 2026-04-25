@@ -1,3 +1,4 @@
+# Author: Jay Patel (w2105573)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test

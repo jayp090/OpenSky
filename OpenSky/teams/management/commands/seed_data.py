@@ -1,3 +1,4 @@
+# Author: Jay Patel (w2105573)
 """
 Management command: python manage.py seed_data [--clear]
 Populates the database with Sky Engineering registry data.
