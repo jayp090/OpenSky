@@ -1,0 +1,21 @@
+{% load static %}
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sky Team Dependency Map</title>
+    <link rel="stylesheet" href="{% static 'OpenSky/static/css/chart.css' %}">    
+    <script src="OpenSky/js/chart_init.js"></script>   
+    <script src="OpenSky/static/js/layout-base.js"></script>
+    <script src="OpenSky/static/js/cose-base.js"></script>
+    <script src="OpenSky/static/js/cytoscape-min.js"></script>
+    <script src="OpenSky/static/js/cytoscape-cise.js"></script>
+</head>
+<body>
+    <div id="cy"></div>
+
+    <script src="{% static 'OpenSky/static/js/chart_init.js' %}"></script>
+</body>
+</html>
+

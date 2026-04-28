@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Python
 __pycache__/
 *.py[cod]
@@ -45,16 +44,3 @@ build/
 
 # Claude / session files
 .claude/
-=======
-venv/
-.venv/
-__pycache__/
-*.py[cod]
-db.sqlite3
-*.sqlite3
-.vscode/
-.idea/
-.env
-.DS_Store
-Thumbs.db
->>>>>>> c54b4d4cfaf4e7693196e4906822b391ee0e4d36
