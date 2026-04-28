@@ -1,0 +1,12 @@
+.main-content-area {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+    overflow: hidden; /* Prevents the whole page from scrolling so only the chart zooms */
+}
+
+#cy {
+    flex-grow: 1; 
+    width: 100%;
+    background-color: #ffffff;
+}

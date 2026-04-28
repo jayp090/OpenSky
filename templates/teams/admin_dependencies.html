@@ -1,0 +1,86 @@
+<!-- Author: Jay Patel (w2105573) -->
+{% extends 'base.html' %}
+{% block title %}Dependencies – {{ team.name }} – Open Sky Admin{% endblock %}
+
+{% block content %}
+<div class="breadcrumb mb-2">
+    <a href="{% url 'admin_team_list' %}">Teams</a><span>›</span>
+    <a href="{% url 'admin_team_edit' team.id %}">{{ team.name }}</a><span>›</span>
+    Dependencies
+</div>
+<div class="page-header flex-between">
+    <div>
+        <h1>{{ team.name }} — Dependencies</h1>
+        <p>Manage upstream and downstream relationships for this team.</p>
+    </div>
+    <a href="{% url 'admin_team_edit' team.id %}" class="btn btn-outline"><i class="bi bi-arrow-left"></i> Back to Team</a>
+</div>
+
+<div class="grid-2" style="align-items:start;">
+    <!-- Add dependency -->
+    <div class="card">
+        <h2 style="font-size:1rem; font-weight:700; margin:0 0 16px;">Add Upstream Dependency</h2>
+        <p class="text-sm text-muted mb-2">Select a team that <strong>{{ team.name }}</strong> depends on (upstream).</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add">
+            <div class="form-group">
+                <label>Select Team</label>
+                <select name="dep_team_id" class="form-control" required>
+                    <option value="">— Choose a team —</option>
+                    {% for t in all_teams %}
+                    <option value="{{ t.id }}">{{ t.name }} ({{ t.department.name|default:"No Dept" }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i> Add Dependency</button>
+        </form>
+    </div>
+
+    <!-- Current dependencies -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card">
+            <h2 style="font-size:1rem; font-weight:700; margin:0 0 12px;">Upstream ({{ upstream.count }})</h2>
+            <p class="text-xs text-muted mb-2">Teams that {{ team.name }} depends on.</p>
+            {% for dep in upstream %}
+            <div class="flex-between" style="padding:8px 0; border-bottom:1px solid #f3f4f6;">
+                <div class="flex-center">
+                    <div class="avatar avatar-pink avatar-sm">{{ dep.name|slice:":2"|upper }}</div>
+                    <div>
+                        <div class="fw-600 text-sm">{{ dep.name }}</div>
+                        <div class="text-xs text-muted">{{ dep.department.name|default:"—" }}</div>
+                    </div>
+                </div>
+                <form method="post" onsubmit="return confirm('Remove this dependency?');">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="remove">
+                    <input type="hidden" name="dep_team_id" value="{{ dep.id }}">
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
+                </form>
+            </div>
+            {% empty %}
+            <p class="text-sm text-muted" style="font-style:italic;">No upstream dependencies.</p>
+            {% endfor %}
+        </div>
+
+        <div class="card">
+            <h2 style="font-size:1rem; font-weight:700; margin:0 0 12px;">Downstream ({{ downstream.count }})</h2>
+            <p class="text-xs text-muted mb-2">Teams that depend on {{ team.name }}.</p>
+            {% for dep in downstream %}
+            <div class="flex-between" style="padding:8px 0; border-bottom:1px solid #f3f4f6;">
+                <div class="flex-center">
+                    <div class="avatar avatar-navy avatar-sm">{{ dep.name|slice:":2"|upper }}</div>
+                    <div>
+                        <div class="fw-600 text-sm">{{ dep.name }}</div>
+                        <div class="text-xs text-muted">{{ dep.department.name|default:"—" }}</div>
+                    </div>
+                </div>
+                <a href="{% url 'admin_team_dependencies' dep.id %}" class="btn btn-sm btn-outline">Manage →</a>
+            </div>
+            {% empty %}
+            <p class="text-sm text-muted" style="font-style:italic;">No downstream teams.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

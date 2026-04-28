@@ -1,0 +1,34 @@
+<!-- Author: Jay Patel (w2105573) -->
+{% extends 'base.html' %}
+{% block title %}{{ action }} Department – Open Sky Admin{% endblock %}
+
+{% block content %}
+<div class="breadcrumb mb-2">
+    <a href="{% url 'admin_dashboard' %}">Admin</a><span>›</span>
+    <a href="{% url 'admin_dept_list' %}">Departments</a><span>›</span>
+    {{ action }}
+</div>
+<div class="page-header"><h1>{{ action }} Department</h1></div>
+
+<div class="card" style="max-width:520px;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Department Name *</label>
+            <input type="text" name="name" class="form-control" value="{{ dept.name|default:'' }}" required placeholder="e.g. Global Apps Engineering">
+        </div>
+        <div class="form-group">
+            <label>Department Head</label>
+            <input type="text" name="head" class="form-control" value="{{ dept.head|default:'' }}" placeholder="Full name of the head">
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" class="form-control" rows="3" placeholder="Brief description of this department...">{{ dept.description|default:'' }}</textarea>
+        </div>
+        <div style="display:flex; gap:10px;">
+            <button type="submit" class="btn btn-primary">{{ action }} Department</button>
+            <a href="{% url 'admin_dept_list' %}" class="btn btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

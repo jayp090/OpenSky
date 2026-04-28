@@ -1,0 +1,22 @@
+<!-- Author: Jay Patel (w2105573) -->
+{% extends 'base.html' %}
+{% block title %}Delete {{ team.name }} – Open Sky Admin{% endblock %}
+
+{% block content %}
+<div class="page-header"><h1>Delete Team</h1></div>
+
+<div class="card" style="max-width:500px;">
+    <div style="text-align:center; padding:20px 0;">
+        <i class="bi bi-exclamation-triangle" style="font-size:3rem; color:var(--danger); display:block; margin-bottom:16px;"></i>
+        <h2 style="margin:0 0 8px;">Are you sure?</h2>
+        <p class="text-muted text-sm">You are about to permanently delete <strong>{{ team.name }}</strong>. This will also remove all {{ team.members.count }} member record{{ team.members.count|pluralize }}. This action cannot be undone.</p>
+    </div>
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Yes, Delete</button>
+        </form>
+        <a href="{% url 'admin_team_list' %}" class="btn btn-outline">Cancel</a>
+    </div>
+</div>
+{% endblock %}
