@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from teams.models import Team, Department, Skill
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def Organisation_page(request):
     return render(request, 'organization/chart.html')
 
@@ -14,7 +16,7 @@ def dept_detail(request, dept_id):
     # Fetch all teams belonging to this department to list them on the page
     teams = dept.teams.all() 
     
-    return render(request, 'organisation/dept_detail.html', {
+    return render(request, 'organization/chart.html', {
         'dept': dept,
         'teams': teams
     })

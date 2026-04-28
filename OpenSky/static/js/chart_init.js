@@ -83,6 +83,16 @@ const initChart = (data) => {
         var node = e.target;
         node.successors().removeClass('highlighted');
     });
+
+    // Click a team node to go to its detail page
+    cy.on('tap', 'node', function(e) {
+        var node = e.target;
+        var nodeId = node.data('id');
+        // Department nodes have id like 'dept_1', team nodes are just numbers
+        if (!String(nodeId).startsWith('dept_')) {
+            window.location.href = '/teams/' + nodeId + '/';
+        }
+    });
 };
 
 // Start the process when the DOM is ready

@@ -64,9 +64,8 @@
         </a>
 
         <a
-          href="#"
-          class="nav-item nav-disabled"
-          title="Coming soon – another student's module"
+          href="{% url 'Organisation_Page' %}"
+          class="nav-item {% if 'Organisation' in request.resolver_match.url_name|default:'' %}active{% endif %}"
         >
           <i class="bi bi-diagram-3"></i><span>Organisation</span>
         </a>
