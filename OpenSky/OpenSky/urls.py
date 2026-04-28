@@ -24,7 +24,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('teams/', include('teams.urls')),
     #uncomment these when ready to implement in your app
-    #path('organization/', include('organization.urls')),
+    path('organization/', include('organization.urls')),
     #path('messages/', include('messaging.urls')),
     #path('schedule/', include('schedule.urls')),
 ]
