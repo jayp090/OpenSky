@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}View Messages{% endblock %}
+{% block page_title %}View Messages{% endblock %}
+
+{% block content %}
+<h3>Messages</h3>
+<div style="display: flex; align-content: center;">
+    <div class="card" style="max-width: 141px;">
+        <a href="{% url 'messaging_create' %}" class="btn btn-primary" style="min-width: 100px; margin-bottom: 12px;" value=""><i class="bi bi-plus" ></i> Create</a>
+        <form method="get" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+            <button type="submit" class="btn btn-primary" style="min-width: 100px;" value=""><i class="bi bi-list-ul" ></i> All</button>
+            <button type="submit" class="btn btn-primary"style="min-width: 100px;" value="inbox"><i class="bi bi-envelope" ></i> Inbox</button>
+            <button type="submit" class="btn btn-primary"style="min-width: 100px;" value="sent"><i class="bi bi-pencil"></i> Sent</button>
+        </form>
+    </div>
+    <div style="min-width: 1060px; margin-left: 15px;">
+        {% for message in messaging %}
+        <div class="card" style="display: flex; align-content: center;">
+            <div style="min-width: 920px;">
+                <h3 style="margin: 0;">{{ message.subject }}</h3>
+                <p style="margin: 0;">{{ message.sender }}</p>
+            </div>
+            <div>
+                <a href="{% url 'messaging_detail' message.id %}"  class="btn btn-sm btn-primary" style="margin-top: 7px;">View Message</a>
+            </div>
+        </div> 
+        {% endfor %}   
+    </div>
+</div>
+
+
+
+
+{% endblock %}

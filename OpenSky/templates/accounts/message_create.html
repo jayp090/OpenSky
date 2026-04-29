@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Message Team{% endblock %}
+{% block page_title %}Send Message{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 1240px;">
+    <h3 style="margin-bottom: 8px; margin-top: 0;">Create Message</h3>
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Name</label>
+            <input type="text" name="sender" class="form-control" value="{{ message.sender|default:'' }}" placeholder="Jim Jones" required>
+        </div>
+        <div class="mb-4">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Team</label>
+            <select name="recipient" class="form-control" style="width:auto;" required>
+                {% for team in teams %}
+                <option value="{{ team }}">{{ team.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-4">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Subject</label>
+            <input type="text" name="subject" class="form-control" value="{{ message.subject|default:'' }}" placeholder="Re: Engineering Dependency" required>
+        </div>
+        <div class="mb-4">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Message</label>
+            <textarea name="content" class="form-control" rows="6" value="{{ message.content|default:'' }}" placeholder="Write your message here..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+        <a href="{% url 'messaging_list' %}" style="margin-left: 15px; color: #666; text-decoration: none;">Back to Messages</a>
+    </form>
+</div>
+{% endblock %}

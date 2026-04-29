@@ -1,10 +1,10 @@
 # Setup 
 
-(assumes Windows Powershell, if you are using bash scripts or Linux replace `python3` with `python`
+(assumes Windows Powershell, if you are using bash scripts or Linux replace `python` with `python3`
 
 ### if you do not have one, create a python venv outside your working directory:
 
-`python3 -m venv venv`
+`python -m venv venv`
 
 ### pull the latest version of the repository:
 
@@ -23,11 +23,11 @@ pip install all dependencies:
 
 ### Run setup commands for the server:
 
-`python3 manage.py migrate`, then
+`python manage.py migrate`, then
 
-`python3 manage.py seed_data`, then
+`python manage.py seed_data`, then
 
-`python3 manage.py createsuperuser`
+`python manage.py createsuperuser`
 
 ### Recommended admin user setup:
 
@@ -39,7 +39,7 @@ password: `Admin@1234`
 
 then, run the server:
 
-`python3 manage.py runserver`
+`python manage.py runserver`
 
 ### Default user details for testing:
 

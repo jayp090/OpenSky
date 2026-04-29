@@ -71,9 +71,8 @@
         </a>
 
         <a
-          href="#"
-          class="nav-item nav-disabled"
-          title="Coming soon – another student's module"
+          href="{% url 'messaging_list' %}"
+          class="nav-item {% if 'messaging' in request.resolver_match.url_name|default:'' %}active{% endif %}"
         >
           <i class="bi bi-chat-left-text"></i><span>Messages</span>
         </a>
