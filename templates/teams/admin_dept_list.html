@@ -1,0 +1,45 @@
+<!-- Author: Jay Patel (w2105573) -->
+{% extends 'base.html' %}
+{% block title %}Manage Departments – Open Sky Admin{% endblock %}
+
+{% block content %}
+<div class="page-header flex-between">
+    <div>
+        <h1>Departments</h1>
+        <p>Manage organisational units and department heads.</p>
+    </div>
+    <a href="{% url 'admin_dept_create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> Add Department</a>
+</div>
+
+<div class="card">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Department</th><th>Head</th><th>Teams</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                {% for dept in depts %}
+                <tr>
+                    <td>
+                        <div class="flex-center">
+                            <div class="avatar avatar-navy">{{ dept.name|slice:":2"|upper }}</div>
+                            <div class="fw-600">{{ dept.name }}</div>
+                        </div>
+                    </td>
+                    <td class="text-sm">{{ dept.head|default:"—" }}</td>
+                    <td><span class="badge badge-gray">{{ dept.team_count }} team{{ dept.team_count|pluralize }}</span></td>
+                    <td>
+                        <div style="display:flex; gap:6px;">
+                            <a href="{% url 'admin_dept_edit' dept.id %}" class="btn btn-sm btn-navy">Edit</a>
+                            <a href="{% url 'admin_dept_delete' dept.id %}" class="btn btn-sm btn-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center text-muted" style="padding:40px;">No departments. <a href="{% url 'admin_dept_create' %}" class="text-primary">Add one →</a></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

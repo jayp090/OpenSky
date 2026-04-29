@@ -1,0 +1,38 @@
+<!-- Author: Jay Patel (w2105573) -->
+{% extends 'base.html' %}
+{% block title %}Settings – Open Sky{% endblock %}
+
+{% block content %}
+<div class="page-header"><h1>Settings</h1></div>
+
+<div class="card" style="max-width:560px; display:flex; flex-direction:column; gap:16px;">
+    <!-- Profile link -->
+    <div class="flex-between" style="padding:14px; background:#f9fafb; border-radius:10px; border:1px solid #f3f4f6;">
+        <div>
+            <div class="fw-600 text-sm">Profile Information</div>
+            <div class="text-xs text-muted">Update your name and email address.</div>
+        </div>
+        <a href="{% url 'profile' %}" class="btn btn-sm btn-outline">Edit Profile</a>
+    </div>
+
+    <!-- Change password -->
+    <div class="flex-between" style="padding:14px; background:#f9fafb; border-radius:10px; border:1px solid #f3f4f6;">
+        <div>
+            <div class="fw-600 text-sm">Password &amp; Security</div>
+            <div class="text-xs text-muted">Change your password or secure your account.</div>
+        </div>
+        <a href="{% url 'change_password' %}" class="btn btn-sm btn-primary"><i class="bi bi-key"></i> Change Password</a>
+    </div>
+
+    <!-- Account info -->
+    <div style="padding:14px; background:#f9fafb; border-radius:10px; border:1px solid #f3f4f6;">
+        <div class="fw-600 text-sm mb-1">Account Information</div>
+        <div class="text-xs text-muted">Username: <strong>{{ user.username }}</strong></div>
+        <div class="text-xs text-muted">Email: <strong>{{ user.email }}</strong></div>
+        <div class="text-xs text-muted">Role: <strong>{% if user.is_staff %}Administrator{% else %}Standard User{% endif %}</strong></div>
+        <div class="text-xs text-muted">Joined: <strong>{{ user.date_joined|date:"j F Y" }}</strong></div>
+    </div>
+
+    <p class="text-xs text-muted" style="margin:4px 0 0;">Version 1.0.5</p>
+</div>
+{% endblock %}

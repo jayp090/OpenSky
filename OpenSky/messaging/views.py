@@ -8,8 +8,8 @@ from .models import Message
 
 # Create your views here.
 def messaging_list(request):
-    messaging = Message.objects.order_by('date') #uncomment when message added
-    return render(request, 'accounts/message_list.html')
+    all_messages = Message.objects.order_by('date')
+    return render(request, 'accounts/message_list.html', {'all_messages': all_messages})
     
 def messaging_detail(request, message_id):
     message    = get_object_or_404(Message, pk=message_id)
